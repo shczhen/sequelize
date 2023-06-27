@@ -15,8 +15,8 @@ RUN wget https://go.dev/dl/go1.20.5.linux-amd64.tar.gz \
     && rm -rf go1.20.5.darwin-arm64.tar.gz
 ENV PATH=$PATH:/usr/local/go/bin
 
-COPY ./package.json /usr/src/app
-RUN cd /usr/src/app && npm install
+# COPY ./package.json /usr/src/app
+# RUN cd /usr/src/app && npm install
 
 ARG user=jenkins
 ARG group=jenkins
