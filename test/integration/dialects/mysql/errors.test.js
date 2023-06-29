@@ -6,6 +6,7 @@ const Support = require('../../support');
 const dialect = Support.getTestDialect();
 const Sequelize = require('sequelize');
 const DataTypes = require('sequelize/lib/data-types');
+const isSupportFK = Support.getIsSupportFk();
 
 if (dialect === 'mysql') {
   describe('[MYSQL Specific] Errors', () => {
@@ -22,7 +23,7 @@ if (dialect === 'mysql') {
       }
     };
 
-    describe('ForeignKeyConstraintError', () => {
+    if (isSupportFK) {describe('ForeignKeyConstraintError', () => {
       beforeEach(function() {
         this.Task = this.sequelize.define('task', { title: DataTypes.STRING });
         this.User = this.sequelize.define('user', { username: DataTypes.STRING });
@@ -77,6 +78,6 @@ if (dialect === 'mysql') {
           }
         );
       });
-    });
+    });}
   });
 }

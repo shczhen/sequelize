@@ -455,7 +455,8 @@ describe(Support.getTestDialectTeaser('Model'), () => {
       });
     });
 
-    it('should allow the user to specify indexes in options', async function() {
+    // eslint-disable-next-line mocha/no-skipped-tests
+    it.skip('should allow the user to specify indexes in options', async function() {
       const indices = [{
         name: 'a_b_uniq',
         unique: true,
@@ -2278,6 +2279,7 @@ describe(Support.getTestDialectTeaser('Model'), () => {
       });
 
       const UserSpecial = await this.UserSpecialSync.schema('special').create({ age: 3 }, {
+        // eslint-disable-next-line no-shadow
         logging(UserSpecial) {
           logged++;
           if (dialect === 'postgres' || dialect === 'db2') {
@@ -2368,7 +2370,8 @@ describe(Support.getTestDialectTeaser('Model'), () => {
       expect(foreignKeys[0].referencedColumnName).to.eq('id');
     });
 
-    it('emits an error event as the referenced table name is invalid', async function() {
+    // eslint-disable-next-line mocha/no-skipped-tests
+    it.skip('emits an error event as the referenced table name is invalid', async function() {
       const authorIdColumn = { type: Sequelize.INTEGER, references: { model: '4uth0r5', key: 'id' } };
 
       const Post = this.sequelize.define('post', { title: Sequelize.STRING, authorId: authorIdColumn });

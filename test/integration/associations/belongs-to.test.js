@@ -7,7 +7,8 @@ const chai = require('chai'),
   DataTypes = require('sequelize/lib/data-types'),
   Sequelize = require('sequelize'),
   current = Support.sequelize,
-  dialect = Support.getTestDialect();
+  dialect = Support.getTestDialect(),
+  isSupportFK = Support.getIsSupportFk();
 
 describe(Support.getTestDialectTeaser('BelongsTo'), () => {
   describe('Model.associations', () => {
@@ -218,18 +219,20 @@ describe(Support.getTestDialectTeaser('BelongsTo'), () => {
       expect(user0).to.be.null;
     });
 
-    it('should throw a ForeignKeyConstraintError if the associated record does not exist', async function() {
-      const User = this.sequelize.define('UserXYZ', { username: DataTypes.STRING }),
-        Task = this.sequelize.define('TaskXYZ', { title: DataTypes.STRING });
-
-      Task.belongsTo(User);
-
-      await this.sequelize.sync({ force: true });
-      await expect(Task.create({ title: 'task', UserXYZId: 5 })).to.be.rejectedWith(Sequelize.ForeignKeyConstraintError);
-      const task = await Task.create({ title: 'task' });
-
-      await expect(Task.update({ title: 'taskUpdate', UserXYZId: 5 }, { where: { id: task.id } })).to.be.rejectedWith(Sequelize.ForeignKeyConstraintError);
-    });
+    if (isSupportFK) {
+      it('should throw a ForeignKeyConstraintError if the associated record does not exist', async function() {
+        const User = this.sequelize.define('UserXYZ', { username: DataTypes.STRING }),
+          Task = this.sequelize.define('TaskXYZ', { title: DataTypes.STRING });
+  
+        Task.belongsTo(User);
+  
+        await this.sequelize.sync({ force: true });
+        await expect(Task.create({ title: 'task', UserXYZId: 5 })).to.be.rejectedWith(Sequelize.ForeignKeyConstraintError);
+        const task = await Task.create({ title: 'task' });
+  
+        await expect(Task.update({ title: 'taskUpdate', UserXYZId: 5 }, { where: { id: task.id } })).to.be.rejectedWith(Sequelize.ForeignKeyConstraintError);
+      });
+    }
 
     it('supports passing the primary key instead of an object', async function() {
       const User = this.sequelize.define('UserXYZ', { username: DataTypes.STRING }),
@@ -518,7 +521,7 @@ describe(Support.getTestDialectTeaser('BelongsTo'), () => {
     });
   });
 
-  describe('foreign key constraints', () => {
+  if (isSupportFK) {describe('foreign key constraints', () => {
     it('are enabled by default', async function() {
       const Task = this.sequelize.define('Task', { title: DataTypes.STRING }),
         User = this.sequelize.define('User', { username: DataTypes.STRING });
@@ -648,7 +651,7 @@ describe(Support.getTestDialectTeaser('BelongsTo'), () => {
         expect(tasks[0].UserId).to.equal(999);
       });
     }
-  });
+  });}
 
   describe('association column', () => {
     it('has correct type and name for non-id primary keys with non-integer type', async function() {

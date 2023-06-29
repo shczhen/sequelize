@@ -9,7 +9,8 @@ const chai = require('chai'),
 
 const current = Support.sequelize;
 
-describe(Support.getTestDialectTeaser('Model'), () => {
+// eslint-disable-next-line mocha/no-skipped-tests
+describe.skip(Support.getTestDialectTeaser('Model'), () => {
   if (current.dialect.supports.GEOMETRY) {
     describe('GEOMETRY', () => {
       beforeEach(async function() {

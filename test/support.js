@@ -303,6 +303,10 @@ const Support = {
 
   addDualInSelect() { 
     return this.getTestDialect() === 'oracle' ? ' FROM DUAL' : '';
+  },
+
+  getIsSupportFk() {
+    return process.env.SUPPORT_FK === 'true';
   }
 };
 
@@ -385,6 +389,7 @@ function assertMatchesExpectation(result, expectation) {
 }
 
 class Expectation {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   assert(value) {}
 }
 

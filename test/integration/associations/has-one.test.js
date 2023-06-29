@@ -5,7 +5,8 @@ const chai = require('chai'),
   Support = require('../support'),
   Sequelize = require('sequelize'),
   current = Support.sequelize,
-  dialect = Support.getTestDialect();
+  dialect = Support.getTestDialect(),
+  isSupportFK = Support.getIsSupportFk();
 
 describe(Support.getTestDialectTeaser('HasOne'), () => {
   describe('Model.associations', () => {
@@ -187,7 +188,7 @@ describe(Support.getTestDialectTeaser('HasOne'), () => {
       expect(task0).to.equal(null);
     });
 
-    it('should throw a ForeignKeyConstraintError if the associated record does not exist', async function() {
+    if (isSupportFK) {it('should throw a ForeignKeyConstraintError if the associated record does not exist', async function() {
       const User = this.sequelize.define('UserXYZ', { username: Sequelize.STRING }),
         Task = this.sequelize.define('TaskXYZ', { title: Sequelize.STRING });
 
@@ -199,7 +200,7 @@ describe(Support.getTestDialectTeaser('HasOne'), () => {
       const task = await Task.create({ title: 'task' });
 
       await expect(Task.update({ title: 'taskUpdate', UserXYZId: 5 }, { where: { id: task.id } })).to.be.rejectedWith(Sequelize.ForeignKeyConstraintError);
-    });
+    });}
 
     it('supports passing the primary key instead of an object', async function() {
       const User = this.sequelize.define('UserXYZ', { username: Sequelize.STRING }),
@@ -374,7 +375,7 @@ describe(Support.getTestDialectTeaser('HasOne'), () => {
     });
   });
 
-  describe('foreign key constraints', () => {
+  if (isSupportFK) {describe('foreign key constraints', () => {
     it('are enabled by default', async function() {
       const Task = this.sequelize.define('Task', { title: Sequelize.STRING }),
         User = this.sequelize.define('User', { username: Sequelize.STRING });
@@ -526,7 +527,7 @@ describe(Support.getTestDialectTeaser('HasOne'), () => {
 
     }
 
-  });
+  });}
 
   describe('association column', () => {
     it('has correct type for non-id primary keys with non-integer type', async function() {

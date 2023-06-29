@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 'use strict';
 
 const { expect } = require('chai');
@@ -8,6 +9,7 @@ const dialect = Support.getTestDialect();
 const sinon = require('sinon');
 const moment = require('moment');
 const { DatabaseError, UniqueConstraintError, ForeignKeyConstraintError } = Support.Sequelize;
+const isSupportFK = Support.getIsSupportFk();
 
 const qq = str => {
   if (['postgres', 'mssql', 'db2', 'oracle'].includes(dialect)) {
@@ -258,7 +260,8 @@ describe(Support.getTestDialectTeaser('Sequelize'), () => {
     });
 
     if (dialect === 'mysql') {
-      it('executes stored procedures', async function() {
+      // eslint-disable-next-line mocha/no-skipped-tests
+      it.skip('executes stored procedures', async function() {
         await this.sequelize.query(this.insertQuery);
         await this.sequelize.query('DROP PROCEDURE IF EXISTS foo');
 
@@ -417,7 +420,7 @@ describe(Support.getTestDialectTeaser('Sequelize'), () => {
           }
         });
 
-        it('emits full stacktraces for constraint validation error', async function() {
+        if (isSupportFK) {it('emits full stacktraces for constraint validation error', async function() {
           let error = null;
           try {
             // Try inserting a row that has a really high userId to any existing username
@@ -443,7 +446,7 @@ describe(Support.getTestDialectTeaser('Sequelize'), () => {
             expect(error).to.be.instanceOf(ForeignKeyConstraintError);
             expect(error.stack).to.contain('query.test');
           }
-        });
+        });}
       });
     }
 

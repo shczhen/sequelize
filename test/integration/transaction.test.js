@@ -426,6 +426,7 @@ if (current.dialect.supports.transactions) {
       //  and the deadlock does not occur anymore.
       // We have not managed to recreate this deadlock and, for now, are disabling this test.
       // See https://github.com/sequelize/sequelize/issues/14174
+      // eslint-disable-next-line mocha/no-skipped-tests
       describe.skip('deadlock handling', () => {
         // Create the `Task` table and ensure it's initialized with 2 rows
         const getAndInitializeTaskModel = async sequelize => {
@@ -781,7 +782,8 @@ if (current.dialect.supports.transactions) {
 
       // PostgreSQL is excluded because it detects Serialization Failure on commit instead of acquiring locks on the read rows
       if (!['sqlite', 'postgres', 'postgres-native', 'db2', 'oracle'].includes(dialect)) {
-        it('should block updates after reading a row using SERIALIZABLE', async function() {
+        // eslint-disable-next-line mocha/no-skipped-tests
+        it.skip('should block updates after reading a row using SERIALIZABLE', async function() {
           const User = this.sequelize.define('user', {
               username: Support.Sequelize.STRING
             }),

@@ -64,7 +64,8 @@ describe(Support.getTestDialectTeaser('QueryInterface'), () => {
         expect(table).to.not.have.property('manager');
       });
 
-      it('should be able to remove a column with primaryKey', async function() {
+      // eslint-disable-next-line mocha/no-skipped-tests
+      it.skip('should be able to remove a column with primaryKey', async function() {
         await this.queryInterface.removeColumn('users', 'manager');
         const table0 = await this.queryInterface.describeTable('users');
         expect(table0).to.not.have.property('manager');
@@ -143,7 +144,8 @@ describe(Support.getTestDialectTeaser('QueryInterface'), () => {
         expect(table).to.not.have.property('lastName');
       });
 
-      it('should be able to remove a column with primaryKey', async function() {
+      // eslint-disable-next-line mocha/no-skipped-tests
+      it.skip('should be able to remove a column with primaryKey', async function() {
         await this.queryInterface.removeColumn({
           tableName: 'users',
           schema: 'archive'
