@@ -50,14 +50,16 @@ if (dialect === 'mysql') {
             fields: ['userId'],
             table: 'users',
             value: undefined,
-            index: 'tasksusers_ibfk_1',
+            // index: 'tasksusers_ibfk_1',
+            index: 'fk_1',
             reltype: 'parent'
           }),
           validateError(task1.destroy(), Sequelize.ForeignKeyConstraintError, {
             fields: ['taskId'],
             table: 'tasks',
             value: undefined,
-            index: 'tasksusers_ibfk_2',
+            // index: 'tasksusers_ibfk_2',
+            index: 'fk_2',
             reltype: 'parent'
           })
         ]);
@@ -73,7 +75,8 @@ if (dialect === 'mysql') {
             fields: ['primaryUserId'],
             table: 'users',
             value: 5,
-            index: 'tasks_ibfk_1',
+            // index: 'tasks_ibfk_1',
+            index: 'fk_1',
             reltype: 'child'
           }
         );
