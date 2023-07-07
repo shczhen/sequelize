@@ -457,8 +457,8 @@ describe(Support.getTestDialectTeaser('Sequelize'), () => {
           } else if (dialect === 'oracle') {
             expect(err.message).to.include('NJS-007');
           } else {
-            // expect(err.message.toString()).to.match(/.*Access denied.*/);
-            expect(err.message.toString()).to.match(/.*ECONNREFUSED.*/);
+            expect(err.message.toString()).to.match(/.*Access denied.*/);
+            // expect(err.message.toString()).to.match(/.*ECONNREFUSED.*/);
           }
         }
       });
